@@ -25,7 +25,7 @@ import {
 import { Flags } from '@oclif/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@flxbl-io/sfp', 'release');
+const messages = Messages.loadMessages('@alanjaouen2/sfp', 'release');
 
 export default class Release extends SfpCommand {
     public static description = messages.getMessage('commandDescription');

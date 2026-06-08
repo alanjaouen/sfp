@@ -7,7 +7,7 @@ import { loglevel, requiredUserNameFlag } from '../../flags/sfdxflags';
 const Table = require('cli-table');
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@flxbl-io/sfp', 'artifacts_query');
+const messages = Messages.loadMessages('@alanjaouen2/sfp', 'artifacts_query');
 
 export default class Query extends SfpCommand {
     public static description = messages.getMessage('commandDescription');

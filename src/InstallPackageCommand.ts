@@ -10,7 +10,7 @@ import { Flags } from '@oclif/core';
 import { requiredUserNameFlag } from './flags/sfdxflags';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@flxbl-io/sfp', 'install_package_command');
+const messages = Messages.loadMessages('@alanjaouen2/sfp', 'install_package_command');
 
 /**
  * Base class providing common functionality for package installation

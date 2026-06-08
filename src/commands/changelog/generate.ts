@@ -6,7 +6,7 @@ import { Flags } from '@oclif/core';
 import { loglevel } from '../../flags/sfdxflags';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@flxbl-io/sfp', 'generate_changelog');
+const messages = Messages.loadMessages('@alanjaouen2/sfp', 'generate_changelog');
 
 export default class GenerateChangelog extends SfpCommand {
     
