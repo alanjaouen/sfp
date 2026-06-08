@@ -1,5 +1,5 @@
 {
-    "name": "@alanjaouen/sfp",
+    "name": "@alanjaouen2/sfp",
     "description": "sfp is a CLI tool to help you manage your Salesforce projects in an artifact centric model",
     "version": "39.0.2",
     "license": "MIT",
