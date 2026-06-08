@@ -1,5 +1,13 @@
 # Changelog
 
+## [39.0.3](https://github.com/alanjaouen/sfp/compare/v39.0.2...v39.0.3) (2026-06-08)
+
+
+### Bug Fixes
+
+* **ApexClassFetcher:** remove unnecessary newline before return statement ([4d2b5ba](https://github.com/alanjaouen/sfp/commit/4d2b5ba5273f143d70527ad1c2f1a4ab246f26a2))
+* **oclif:** load messages from fork package scope ([3cdd337](https://github.com/alanjaouen/sfp/commit/3cdd33735aa59f4cc8be979e2aaf7a32eb1e3040))
+
 ## [39.0.2](https://github.com/alanjaouen/sfp/compare/v39.0.2...v39.0.2) (2026-06-08)
 
 
