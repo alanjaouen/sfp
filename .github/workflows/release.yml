@@ -1,6 +1,6 @@
 # This pipeline builds the sfp cli plugin
 # Needs following secrets
-# GITHUB_TOKEN :  GitHub Actions token for publishing npm package to GitHub Packages
+# NPM_TOKEN : Token for publishing npm package to npmjs.org
 # DOCKER_USERNAME : Token to username for ghcr.io for publishing docker
 # DOCKER_SECRET: Password/Token for ghcr.io for publishing docker
 #
@@ -46,9 +46,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          token: ${{ secrets.GITHUB_TOKEN }}
-          scope: '@alanjaouen'
-          registry-url: 'https://npm.pkg.github.com'
+          token: ${{ secrets.NPM_TOKEN }}
+          registry-url: 'https://registry.npmjs.org'
 
       - uses: googleapis/release-please-action@v4
         id: release
@@ -61,7 +60,7 @@ jobs:
           npm publish --tag next
         name: Publish packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         if: ${{ steps.release.outputs.releases_created == 'true'}}
 
 
@@ -109,7 +108,7 @@ jobs:
       pathToPackageJson: 'package.json'
       environment: sfp-beta
     secrets:
-      package_registry_token: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     needs:
       - release-please
 
@@ -151,7 +150,7 @@ jobs:
       pathToPackageJson: 'package.json'
       environment: sfp-prod
     secrets:
-      package_registry_token: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     needs:
       - release-please
 

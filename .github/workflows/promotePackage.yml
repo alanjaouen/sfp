@@ -16,7 +16,7 @@ on:
         type: string
         required: true
     secrets:
-      package_registry_token:
+      NPM_TOKEN:
         required: true
 
 
@@ -33,8 +33,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          scope: '@alanjaouen'
-          registry-url: 'https://npm.pkg.github.com'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: 'Set Git Config'
         run: |
@@ -49,4 +48,4 @@ jobs:
           # just to be sure, npm does some time skip setting up tags
           npm dist-tag add $PKG_NAME@$PKG_VERSION ${{ inputs.version }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.package_registry_token }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
