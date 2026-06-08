@@ -22,7 +22,6 @@ export default class ApexClassFetcher {
             const records = await QueryHelper.query<{ Id: string; Name: string }>(query, this.conn, false);
             result = result.concat(records);
         }
-
         return result;
     }
 }
