@@ -1,6 +1,6 @@
 # This pipeline builds the sfp cli plugin
 # Needs following secrets
-# NPM_TOKEN :  Token to npm.js for dx@scale scope
+# GITHUB_TOKEN :  GitHub Actions token for publishing npm package to GitHub Packages
 # DOCKER_USERNAME : Token to username for ghcr.io for publishing docker
 # DOCKER_SECRET: Password/Token for ghcr.io for publishing docker
 #
@@ -27,8 +27,8 @@ on:
 
 
 
-# Merge to Develop, create builds   
-jobs: 
+# Merge to Develop, create builds
+jobs:
   release-please:
     outputs:
       continue: ${{ steps.release.outputs.releases_created }}
@@ -46,13 +46,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          token: ${{ secrets.NPM_TOKEN }}
-          registry-url: 'https://registry.npmjs.org'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          scope: '@alanjaouen'
+          registry-url: 'https://npm.pkg.github.com'
 
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.GHA_TOKEN }}
+          token: ${{ github.token }}
           config-file: release-please-config.json
       - run: |
           npm i
@@ -60,7 +61,7 @@ jobs:
           npm publish --tag next
         name: Publish packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ steps.release.outputs.releases_created == 'true'}}
 
 
@@ -77,9 +78,9 @@ jobs:
     secrets:
       username: ${{ secrets.DOCKER_USERNAME }}
       token: ${{ secrets.GITHUB_TOKEN }}
-    needs: 
+    needs:
       - release-please
-  
+
   build-docker-lite:
     name: 'build sfp lite docker image'
     uses: ./.github/workflows/sfp-build-docker.yml
@@ -93,7 +94,7 @@ jobs:
     secrets:
       username: ${{ secrets.DOCKER_USERNAME }}
       token: ${{ secrets.GITHUB_TOKEN }}
-    needs: 
+    needs:
       - release-please
 
  #Promotion Stages
@@ -108,18 +109,18 @@ jobs:
       pathToPackageJson: 'package.json'
       environment: sfp-beta
     secrets:
-      npm-token: ${{ secrets.NPM_TOKEN }}
-    needs: 
+      package_registry_token: ${{ secrets.GITHUB_TOKEN }}
+    needs:
       - release-please
-  
+
   beta-docker:
     name: 'promote docker to beta'
     uses: ./.github/workflows/sfp-promote-docker.yml
     with:
       job-environment: 'sfp-beta-docker'
       repo: 'flxbl-io'
-      new-tag: beta   
-      image: 'sfp-lite-rc' 
+      new-tag: beta
+      image: 'sfp-lite-rc'
     secrets:
       username: ${{ secrets.DOCKER_USERNAME }}
       token: ${{ secrets.GITHUB_TOKEN }}
@@ -131,14 +132,14 @@ jobs:
     with:
       job-environment: 'sfp-beta-docker'
       repo: 'flxbl-io'
-      new-tag: beta   
-      image: 'sfp-rc'  
+      new-tag: beta
+      image: 'sfp-rc'
     secrets:
       username: ${{ secrets.DOCKER_USERNAME }}
       token: ${{ secrets.GITHUB_TOKEN }}
     needs: [ build-docker-lite ]
- 
- 
+
+
 
 
   sfp-prod:
@@ -150,10 +151,10 @@ jobs:
       pathToPackageJson: 'package.json'
       environment: sfp-prod
     secrets:
-      npm-token: ${{ secrets.NPM_TOKEN }}
-    needs: 
+      package_registry_token: ${{ secrets.GITHUB_TOKEN }}
+    needs:
       - release-please
-  
+
   prod-docker:
     name: 'copy rc docker to prod'
     uses: ./.github/workflows/sfp-copy-docker.yml

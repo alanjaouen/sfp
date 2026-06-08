@@ -16,7 +16,7 @@ on:
         type: string
         required: true
     secrets:
-      npm-token:
+      package_registry_token:
         required: true
 
 
@@ -30,21 +30,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14'
-          registry-url: https://registry.npmjs.org/
+          node-version: '20'
+          scope: '@alanjaouen'
+          registry-url: 'https://npm.pkg.github.com'
 
       - name: 'Set Git Config'
         run: |
           git config --global user.email "sfpowerkit.ci@dev.azure.com"
           git config --global user.name "sfpowerkitci"
-
-      - name: 'Create .npmrc file in HOME directory'
-        run: |
-           echo "//registry.npmjs.org/:_authToken=${AUTH_TOKEN}" > ~/.npmrc
-        env:
-          AUTH_TOKEN: ${{ secrets.npm-token }}
 
       - name: 'Promote package'
         run: |
@@ -54,4 +49,4 @@ jobs:
           # just to be sure, npm does some time skip setting up tags
           npm dist-tag add $PKG_NAME@$PKG_VERSION ${{ inputs.version }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.npm-token }}
+          NODE_AUTH_TOKEN: ${{ secrets.package_registry_token }}
