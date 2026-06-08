@@ -22,7 +22,6 @@ export default class SFDMURunImpl extends SFDXCommand {
 
     getGeneratedParams(): string {
         let command = `--path ${this.packageDirectory} -s csvfile -u ${this.target_org} --noprompt --canmodify ${this.targetOrgDomain}`;
-        if (this.logLevel) command += ` --loglevel ${LoggerLevel[this.logLevel]}`;
         return command;
     }
 }
